@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: onboardingredhat1workflow-gitops
+  namespace: orchestrator-gitops
+  labels:
+    app-type: workflow
+    app: onboardingredhat1workflow
+    rht-gitops.com/janus-argocd: onboardingredhat1workflow-gitops
+spec:
+  destination:
+    namespace: sonataflow-infra
+    server: https://kubernetes.default.svc
+  project: orchestrator-gitops
+  source:
+    path: ./kustomize/base
+    repoURL: git@github.com:redhat-1/onboarding-redhat-1-gitops.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
